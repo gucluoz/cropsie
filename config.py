@@ -7,6 +7,11 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    IMAGE_PREFIX = 'http://dilek.co/images/'
+    IMAGE_DIR = os.path.join(basedir, 'uploads/')
+    IMAGE_RAW_DIR_SUFFIX = 'raw/'
+    IMAGE_PROCESSED_DIR_SUFFIX = 'processed/'
+    ALLOWED_EXTENSIONS = ['jpg','jpeg','png']
 
     @staticmethod
     def init_app(app):

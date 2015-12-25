@@ -1,16 +1,21 @@
 from . import db
-from sqlalchemy_imageattach.entitiy import Image,image_attachment
+import datetime
 
-class RawImage(db.Model, Image):
-  __tablename__ = 'raw_image'
-
+class Image(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  original_filename = db.Column(db.String(100), nullable=True)
+  filename = db.Column(db.String(100), nullable=True, index=True)
+  processed = db.Column(db.Boolean, default=True, index=True)
   upload_date = db.Column(db.DateTime)
 
-class ProcessedImage(db.Model, Image):
-  __tablename__ = 'processed_image'
+  def __init__(self,filename):
+    self.filename = filename
+    self.processed = False
+    self.upload_date = datetime.datetime.utcnow()
 
-  id = db.Column(db.Integer, primary_key=True)
-  original_filename = db.Column(db.String(100), nullable=True)
-  upload_date = db.Column(db.DateTime)
+  def serialize(self):
+    return {
+      'id': self.id,
+      'filename': self.filename,
+      'processed': self.processed, 
+      'upload_date': self.upload_date
+    }
