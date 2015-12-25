@@ -21,15 +21,15 @@ def return_random_image():
     return jsonify(img.serialize())
   return 'not found',404
 
-@api.route('/raw/<name>')
-def return_raw_image(name):
-  img = Image.query.filter_by(processed=False, filename=name).first()
+@api.route('/raw/<int:id>')
+def return_raw_image(id):
+  img = Image.query.filter_by(processed=False, id=id).first()
   if img:
     return jsonify(img.serialize())
   return 'not found',404
 
 @api.route('/raw/', methods=['POST'])
-def save_processed_image():
+def save_raw_image():
   f = request.files['file']
   if f and is_file_allowed(f.filename):
     filename = secure_filename(f.filename)
@@ -40,6 +40,30 @@ def save_processed_image():
 
     img = Image(filename)
     db.session.add(img)
+    db.session.commit()
+
+@api.route('/processed/<int:id>', methods=['POST', 'GET'])
+def save_processed_image(id):
+  if request.method == 'GET':
+    img = Image.query.filter_by(processed=True, id=id).first()
+    if img:
+      return jsonify(img.serialize())
+    return 'not found',404
+
+  f = request.files['file']
+  if f and is_file_allowed(f.filename):
+    raw_image = Image.query.filter_by(processed=False).first()
+    if not raw_image:
+      return '',500
+
+    filename = secure_filename(f.filename)
+    if(processed_file_exists(filename)):
+      return '',500
+
+    f.save(os.path.join(current_app.config['IMAGE_DIR']+\
+      current_app.config['IMAGE_PROCESSED_DIR_SUFFIX'], filename))
+
+    raw_image.processed = True
     db.session.commit()
 
   return '',200

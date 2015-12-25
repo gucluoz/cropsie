@@ -1,5 +1,6 @@
 from . import db
 import datetime
+from flask import current_app
 
 class Image(db.Model):
   id = db.Column(db.Integer, primary_key=True)
@@ -15,7 +16,7 @@ class Image(db.Model):
   def serialize(self):
     return {
       'id': self.id,
-      'filename': self.filename,
+      'filename': current_app.config['IMAGE_PREFIX'] + self.filename,
       'processed': self.processed, 
       'upload_date': self.upload_date
     }
