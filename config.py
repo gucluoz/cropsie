@@ -7,13 +7,14 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    IMAGE_PREFIX = 'http://dilek.co/images/'
     STATIC_DIR = os.path.join(basedir,'static/')
-    IMAGE_DIR = STATIC_DIR + 'uploads/'
+    UPLOAD_DIR = 'uploads/'
+    IMAGE_DIR = STATIC_DIR + UPLOAD_DIR
     IMAGE_RAW_DIR_SUFFIX = 'raw/'
     IMAGE_PROCESSED_DIR_SUFFIX = 'processed/'
     ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif']
     STATIC_URL_PATH = '/static'
+    IMAGE_PREFIX = STATIC_URL_PATH + '/' + UPLOAD_DIR
 
     @staticmethod
     def init_app(app):
@@ -23,7 +24,6 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
-    IMAGE_PREFIX = 'http://localhost:5000/static/'
 
 
 class TestingConfig(Config):

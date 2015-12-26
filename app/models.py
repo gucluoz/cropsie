@@ -16,7 +16,8 @@ class Image(db.Model):
   def serialize(self):
     return {
       'id': self.id,
-      'filename': current_app.config['IMAGE_PREFIX'] + self.filename,
+      'filename': current_app.config['IMAGE_PREFIX'] \
+        + current_app.config['IMAGE_RAW_DIR_SUFFIX'] + self.filename,
       'processed': self.processed, 
       'upload_date': self.upload_date
     }
