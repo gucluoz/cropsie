@@ -8,7 +8,8 @@ class Config:
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     IMAGE_PREFIX = 'http://dilek.co/images/'
-    IMAGE_DIR = os.path.join(basedir, 'uploads/')
+    STATIC_DIR = os.path.join(basedir,'static/')
+    IMAGE_DIR = STATIC_DIR + 'uploads/'
     IMAGE_RAW_DIR_SUFFIX = 'raw/'
     IMAGE_PROCESSED_DIR_SUFFIX = 'processed/'
     ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif']

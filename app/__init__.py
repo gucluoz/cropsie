@@ -7,9 +7,8 @@ db = SQLAlchemy()
 bootstrap = Bootstrap()
 
 def create_app(config_name):
-  app = Flask(__name__, 
-    static_folder=config[config_name].IMAGE_DIR + \
-      config[config_name].IMAGE_RAW_DIR_SUFFIX,
+  app = Flask(__name__,
+    static_folder=config[config_name].STATIC_DIR,
     static_url_path=config[config_name].STATIC_URL_PATH)
   app.config.from_object(config[config_name])
   config[config_name].init_app(app)
