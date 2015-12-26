@@ -1,0 +1,42 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="Stylesheet" type="text/css" href="/static/dropzone.css">
+  <style>
+    .dropzone {
+      border: 2px dashed #0087F7;
+      border-radius: 5px;
+      background: white;}
+      .dropzone .dz-message { font-weight: 400; }
+      .dropzone .dz-message .note { font-size: 0.8em; font-weight: 200; display: block; margin-top: 1.4rem; 
+    }
+    .upload-container {
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+{% endblock styles %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="/static/dropzone.js"></script>
+  <script src="/static/upload.js"></script>
+{% endblock scripts %}
+
+{% block title %}Cropsie - Upload{% endblock title %}
+
+{% block navbar %}
+  <div class="navbar navbar-fixed-top">
+  </div>
+{% endblock navbar %}
+
+{% block content %}
+  <center>
+    <div class="upload-container">
+      <form action="/api/v1/raw/"
+        class="dropzone" id="uploadForm"></form>
+    </div>
+  </center>
+{% endblock content %}

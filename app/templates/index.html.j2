@@ -1,28 +1,29 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <div class="crop-container">
+{% extends 'bootstrap/base.html' %}
 
-    </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="http://foliotek.github.io/Croppie/croppie.js"></script>
-    <script>
-      $(document).ready(function(){
-        $.get("http://localhost:5000/api/v1/raw/", function(d, s){
-          if (d.filename)
-          {
-            var c = $('.crop-container').croppie({
-              viewport: {width: 150, height: 200, type: 'square'},
-              boundary: { width:500, height: 500},
-              mouseWheelZoom: true
-            });
-            c.croppie('bind',{
-              url: d.filename
-            });
-          }
-        });
-      });
-    </script>
-  </body>
-</html>
+{% block styles %}
+  {{ super() }}
+  <link rel="Stylesheet" type="text/css" href="/static/croppie.css">
+{% endblock styles %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="/static/croppie.min.js"></script>
+  <script src="/static/main.js"></script>
+  <script>
+    $(document).ready(function(){Crop.init()});
+  </script>
+{% endblock scripts %}
+
+{% block title %}Cropsie{% endblock title %}
+
+{% block navbar %}
+  <div class="navbar navbar-fixed-top">
+  </div>
+{% endblock navbar %}
+
+{% block content %}
+  <center>
+    <div id="crop-container"></div>
+    <div id="actions"></div>
+  </center>
+{% endblock content %}
