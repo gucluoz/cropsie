@@ -5,6 +5,7 @@ from sqlalchemy.sql.expression import func
 from werkzeug import secure_filename
 from .. import db
 import os
+import base64
 
 def is_file_allowed(filename):
   lower_filename = filename.lower()
@@ -13,6 +14,9 @@ def is_file_allowed(filename):
 
 def raw_file_exists(filename):
   return Image.query.filter_by(processed=False, filename=filename).first() != None
+
+def processed_file_exists(filename):
+  return Image.query.filter_by(processed=True, filename=filename).first() != None
 
 @api.route('/raw/', methods=['GET'])
 def return_random_image():
@@ -54,20 +58,27 @@ def save_processed_image(id):
       return jsonify(img.serialize())
     return 'not found',404
 
-  f = request.files['file']
-  if f and is_file_allowed(f.filename):
-    raw_image = Image.query.filter_by(processed=False).first()
-    if not raw_image:
-      return 'raw image not found',500
+  raw_image = Image.query.filter_by(processed=False, id=id).first()
+  if not raw_image:
+    return 'raw image not found',500
 
-    filename = secure_filename(f.filename)
-    if(processed_file_exists(filename)):
-      return 'file already exists',500
+  data = request.form['data']
+  if not data:
+    return 'data needed',500
+  if(processed_file_exists(raw_image.filename)):
+    return 'file already exists',500
 
-    f.save(os.path.join(current_app.config['IMAGE_DIR']+\
-      current_app.config['IMAGE_PROCESSED_DIR_SUFFIX'], filename))
+  b64encoded = data.rsplit(',',1)[1]
+  if not b64encoded:
+    return 'data is not base64 encoded',500
 
-    raw_image.processed = True
-    db.session.commit()
+  decoded = base64.b64decode(b64encoded)
+  f = open(os.path.join(current_app.config['IMAGE_DIR']+\
+      current_app.config['IMAGE_PROCESSED_DIR_SUFFIX'], raw_image.filename),'wb')
+  f.write(decoded)
+  f.close()
+
+  raw_image.processed = True
+  db.session.commit()
 
   return '',200
