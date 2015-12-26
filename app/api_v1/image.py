@@ -41,6 +41,10 @@ def save_raw_image():
     img = Image(filename)
     db.session.add(img)
     db.session.commit()
+    return '',200
+  else:
+    return 'extension not allowed',500
+  return 'unspecified error',500
 
 @api.route('/processed/<int:id>', methods=['POST', 'GET'])
 def save_processed_image(id):
@@ -54,11 +58,11 @@ def save_processed_image(id):
   if f and is_file_allowed(f.filename):
     raw_image = Image.query.filter_by(processed=False).first()
     if not raw_image:
-      return '',500
+      return 'raw image not found',500
 
     filename = secure_filename(f.filename)
     if(processed_file_exists(filename)):
-      return '',500
+      return 'file already exists',500
 
     f.save(os.path.join(current_app.config['IMAGE_DIR']+\
       current_app.config['IMAGE_PROCESSED_DIR_SUFFIX'], filename))

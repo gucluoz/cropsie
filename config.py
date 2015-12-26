@@ -11,7 +11,8 @@ class Config:
     IMAGE_DIR = os.path.join(basedir, 'uploads/')
     IMAGE_RAW_DIR_SUFFIX = 'raw/'
     IMAGE_PROCESSED_DIR_SUFFIX = 'processed/'
-    ALLOWED_EXTENSIONS = ['jpg','jpeg','png']
+    ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif']
+    STATIC_URL_PATH = '/static'
 
     @staticmethod
     def init_app(app):
@@ -21,6 +22,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+    IMAGE_PREFIX = 'http://localhost:5000/static/'
 
 
 class TestingConfig(Config):
@@ -33,6 +35,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+    IMAGE_PREFIX = 'http://dilek.co/images/'
 
 
 config = {
