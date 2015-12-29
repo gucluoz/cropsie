@@ -3,5 +3,5 @@ Dropzone.options.uploadForm = {
   maxFilesize: 7,
   uploadMultiple: false,
   clickable: true,
-  acceptedFiles: '.jpg, .jpeg, .gif'
+  acceptedFiles: '.jpg, .jpeg, .gif, .png'
 };
