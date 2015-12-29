@@ -20,7 +20,7 @@ function saveCrop(){
 var Crop = (function(){
   function init() {
     $("#crop-container").croppie({
-      viewport: { width: 50, height: 50, type: "square"},
+      viewport: { width: 155, height: 35, type: "square"},
       boundary: { width: 800, height: 600},
       mouseWheelZoom: true
     });
